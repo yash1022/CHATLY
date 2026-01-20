@@ -49,11 +49,11 @@ export default function ProfilePage() {
 
   if (!user) {
     return (
-      <section className="min-h-screen bg-linear-to-br from-slate-50 via-white to-slate-100 flex items-center justify-center px-6">
-        <div className="max-w-xl w-full bg-white/80 border border-white/60 rounded-3xl p-10 text-center shadow-2xl">
+      <section className="min-h-screen bg-linear-to-br from-slate-950 via-slate-900 to-slate-950 flex items-center justify-center px-6">
+        <div className="max-w-xl w-full bg-slate-900/80 border border-slate-800 rounded-3xl p-10 text-center shadow-2xl">
           <p className="text-sm font-semibold tracking-[0.35em] text-slate-400 uppercase mb-4">Profile</p>
-          <h1 className="text-3xl font-bold text-slate-800 mb-4">You are not signed in</h1>
-          <p className="text-slate-600 mb-8">
+          <h1 className="text-3xl font-bold text-slate-100 mb-4">You are not signed in</h1>
+          <p className="text-slate-300 mb-8">
             Log in to see your personalized profile, contact list, and account insights.
           </p>
           <div className="flex flex-wrap justify-center gap-3">
@@ -67,7 +67,7 @@ export default function ProfilePage() {
             <button
               type="button"
               onClick={() => navigate('/')}
-              className="px-6 py-3 rounded-full font-semibold text-slate-700 border border-slate-200 hover:border-blue-400 hover:text-blue-600 transition-colors"
+              className="px-6 py-3 rounded-full font-semibold text-slate-200 border border-slate-700 hover:border-blue-400 hover:text-blue-400 transition-colors"
             >
               Back Home
             </button>
@@ -78,68 +78,77 @@ export default function ProfilePage() {
   }
 
   return (
-    <section className="min-h-screen bg-linear-to-br from-slate-50 via-white to-slate-100 py-16 px-6">
+    <section className="min-h-screen bg-linear-to-br from-slate-950 via-slate-900 to-slate-950 py-16 px-6">
       <div className="max-w-6xl mx-auto space-y-10">
-        <header className="relative overflow-hidden rounded-3xl bg-white/80 border border-white/60 shadow-lg">
+        <header className="relative overflow-hidden rounded-3xl bg-slate-900/80 border border-slate-800 shadow-lg">
           <div className="absolute inset-0 bg-linear-to-r from-blue-500/10 via-purple-500/10 to-pink-500/10" />
           <div className="relative p-8 md:p-10 flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
             <div>
               <p className="text-sm font-semibold tracking-[0.35em] text-slate-400 uppercase">Profile</p>
-              <h1 className="text-4xl md:text-5xl font-bold text-slate-800 mt-2">Your Space on Chatly</h1>
-              <p className="text-slate-600 mt-4 max-w-2xl">
+              <h1 className="text-4xl md:text-5xl font-bold text-slate-100 mt-2">Your Space on Chatly</h1>
+              <p className="text-slate-300 mt-4 max-w-2xl">
                 Keep track of your identity, connections, and preferences across the Chatly network.
               </p>
             </div>
-            <button
-              type="button"
-              onClick={() => navigate('/chats')}
-              className="self-start md:self-auto px-6 py-3 rounded-full text-white font-semibold bg-linear-to-r from-blue-500 to-purple-600 shadow-md hover:shadow-xl hover:scale-105 transition-all"
-            >
-              Jump to Chats
-            </button>
+            <div className="self-start md:self-auto flex flex-wrap gap-3">
+              <button
+                type="button"
+                onClick={() => navigate('/profile/edit')}
+                className="px-6 py-3 rounded-full font-semibold text-slate-200 border border-slate-700 hover:border-blue-400 hover:text-blue-400 transition-colors"
+              >
+                Edit Profile
+              </button>
+              <button
+                type="button"
+                onClick={() => navigate('/chats')}
+                className="px-6 py-3 rounded-full text-white font-semibold bg-linear-to-r from-blue-500 to-purple-600 shadow-md hover:shadow-xl hover:scale-105 transition-all"
+              >
+                Jump to Chats
+              </button>
+            </div>
           </div>
         </header>
 
         <div className="grid gap-8 lg:grid-cols-[320px,1fr]">
           <div className="space-y-8">
-            <article className="relative overflow-hidden rounded-3xl bg-white shadow-xl border border-white/60">
+            <article className="relative overflow-hidden rounded-3xl bg-slate-900 shadow-xl border border-slate-800">
               <div className="absolute inset-0 bg-linear-to-br from-blue-500/5 via-indigo-500/5 to-purple-500/5" />
               <div className="relative px-10 py-12 text-center flex flex-col items-center gap-6">
-                <div className="w-36 h-36 rounded-3xl overflow-hidden border-4 border-white shadow-2xl">
+                <div className="w-36 h-36 rounded-3xl overflow-hidden border-4 border-slate-800 shadow-2xl">
                   <img src={avatarSrc} alt={user?.name || 'Profile avatar'} className="w-full h-full object-cover" />
                 </div>
                 <div>
-                  <h2 className="text-3xl font-semibold text-slate-900">{user?.name || 'Unnamed User'}</h2>
-                  <p className="text-slate-500 mt-1 text-lg">{user?.username ? `@${user.username}` : 'username pending'}</p>
+                  <h2 className="text-3xl font-semibold text-slate-100">{user?.name || 'Unnamed User'}</h2>
+                  <p className="text-slate-400 mt-1 text-lg">{user?.username ? `@${user.username}` : 'username pending'}</p>
                 </div>
                 <div className="w-full flex flex-col gap-1 text-sm">
                   <p className="font-semibold text-slate-400 uppercase tracking-[0.3em]">Email</p>
-                  <p className="text-slate-700 text-base">{user?.email || 'Not provided'}</p>
+                  <p className="text-slate-200 text-base">{user?.email || 'Not provided'}</p>
                 </div>
                 {memberSince && (
-                  <div className="text-sm text-slate-500">
-                    Member since <span className="font-semibold text-slate-700">{memberSince}</span>
+                  <div className="text-sm text-slate-400">
+                    Member since <span className="font-semibold text-slate-200">{memberSince}</span>
                   </div>
                 )}
               </div>
             </article>
 
-            <article className="rounded-3xl bg-white/80 border border-white/60 shadow-sm p-8">
+            <article className="rounded-3xl bg-slate-900/80 border border-slate-800 shadow-sm p-8">
               <p className="text-sm font-semibold tracking-[0.3em] text-slate-400 uppercase">Bio</p>
-              <p className="text-lg text-slate-700 mt-4 leading-relaxed">
+              <p className="text-lg text-slate-300 mt-4 leading-relaxed">
                 {user?.bio?.trim() ? user.bio : 'Tell the world a little bit about yourself to make your profile feel more personal.'}
               </p>
             </article>
           </div>
 
           <div className="space-y-8">
-            <article className="rounded-3xl bg-white/80 border border-white/60 shadow-sm p-8">
+            <article className="rounded-3xl bg-slate-900/80 border border-slate-800 shadow-sm p-8">
               <p className="text-sm font-semibold tracking-[0.3em] text-slate-400 uppercase">Account Details</p>
               <div className="grid md:grid-cols-2 gap-6 mt-6">
                 {infoGrid.map(item => (
-                  <div key={item.label} className="p-5 rounded-2xl bg-slate-50 border border-slate-100">
+                  <div key={item.label} className="p-5 rounded-2xl bg-slate-900 border border-slate-800">
                     <p className="text-xs font-semibold text-slate-400 tracking-[0.25em] uppercase">{item.label}</p>
-                    <p className="text-lg font-medium text-slate-800 mt-2 break-all">{item.value}</p>
+                    <p className="text-lg font-medium text-slate-100 mt-2 break-all">{item.value}</p>
                   </div>
                 ))}
               </div>
@@ -160,7 +169,7 @@ export default function ProfilePage() {
               ))}
             </div>
 
-            <article className="rounded-3xl bg-white/80 border border-white/60 shadow-sm p-8 space-y-8">
+            <article className="rounded-3xl bg-slate-900/80 border border-slate-800 shadow-sm p-8 space-y-8">
               <div>
                 <div className="flex items-center justify-between">
                   <p className="text-sm font-semibold tracking-[0.3em] text-slate-400 uppercase">Contacts</p>
@@ -171,13 +180,13 @@ export default function ProfilePage() {
                     safeContacts.slice(0, 8).map((contact, idx) => (
                       <span
                         key={contact?._id || contact || idx}
-                        className="px-3 py-1.5 rounded-full bg-slate-100 text-slate-600 border border-slate-200 text-sm"
+                        className="px-3 py-1.5 rounded-full bg-slate-800 text-slate-200 border border-slate-700 text-sm"
                       >
                         {renderRefLabel(contact, `Contact ${idx + 1}`)}
                       </span>
                     ))
                   ) : (
-                    <p className="text-slate-500 text-sm">You have not added anyone yet.</p>
+                    <p className="text-slate-400 text-sm">You have not added anyone yet.</p>
                   )}
                 </div>
               </div>
@@ -192,13 +201,13 @@ export default function ProfilePage() {
                     safeBlocked.slice(0, 8).map((blocked, idx) => (
                       <span
                         key={blocked?._id || blocked || idx}
-                        className="px-3 py-1.5 rounded-full bg-rose-50 text-rose-600 border border-rose-100 text-sm"
+                        className="px-3 py-1.5 rounded-full bg-rose-500/10 text-rose-300 border border-rose-500/20 text-sm"
                       >
                         {renderRefLabel(blocked, `User ${idx + 1}`)}
                       </span>
                     ))
                   ) : (
-                    <p className="text-slate-500 text-sm">No one is blocked right now.</p>
+                    <p className="text-slate-400 text-sm">No one is blocked right now.</p>
                   )}
                 </div>
               </div>

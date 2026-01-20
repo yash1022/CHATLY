@@ -26,7 +26,7 @@ export default function Navbar() {
 
 
   return (
-    <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-md shadow-sm">
+    <header className="sticky top-0 z-50 bg-slate-950/80 backdrop-blur-md border-b border-slate-800">
       <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
         <button
           type="button"
@@ -36,7 +36,7 @@ export default function Navbar() {
           <span className="w-10 h-10 bg-linear-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center text-white font-bold">
             C
           </span>
-          <span className="text-2xl font-bold bg-linear-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+          <span className="text-2xl font-bold bg-linear-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
             Chatly
           </span>
         </button>
@@ -50,7 +50,7 @@ export default function Navbar() {
           <button
             type="button"
             onClick={() => handleLogout()}
-            className="px-5 py-2 text-slate-700 font-medium rounded-full hover:text-blue-600 transition-colors"
+            className="px-5 py-2 text-slate-200 font-medium rounded-full hover:text-blue-400 transition-colors"
           >
             Logout
           </button>
@@ -61,7 +61,7 @@ export default function Navbar() {
           <button
             type="button"
             onClick={() => navigate('/login')}
-            className="px-5 py-2 text-slate-700 font-medium rounded-full hover:text-blue-600 transition-colors"
+            className="px-5 py-2 text-slate-200 font-medium rounded-full hover:text-blue-400 transition-colors"
           >
             Login
           </button>
@@ -87,7 +87,7 @@ export default function Navbar() {
             <button
             type="button"
             onClick={() => navigate('/profile')}
-            className="w-11 h-11 rounded-full border-2 border-white overflow-hidden shadow-md hover:scale-105 transition-transform"
+            className="w-11 h-11 rounded-full border-2 border-slate-800 overflow-hidden shadow-md hover:scale-105 transition-transform"
             aria-label="Profile"
           >
             <img

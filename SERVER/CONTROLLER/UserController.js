@@ -8,7 +8,7 @@ import {
   hashToken,
   compareTokenHash
 } from '../UTILS/token.js';
-import { generateKeyPair } from '../UTILS/keyUtils.js';
+
 
 /**
  * Cookie settings for refresh token
@@ -25,8 +25,9 @@ const COOKIE_OPTIONS = {
 
 // Register user
 export async function register(req, res) {
-  const { name , username , email, password , bio , ppurl } = req.body;
+  const { name , username , email, password , bio , ppurl, publicKey } = req.body;
   if (!email || !password) return res.status(400).json({ message: 'Email and password required' });
+  if (!publicKey) return res.status(400).json({ message: 'Public key required' });
 
   const existing = await User.findOne({ $or: [ { email }, { username } ] });
   if (existing) return res.status(409).json({ message: 'Email or username already in use' });
@@ -34,9 +35,9 @@ export async function register(req, res) {
   const salt = await bcrypt.genSalt(10);
   const passwordHash = await bcrypt.hash(password, salt);
 
-  const { publicKey, privateKey } = generateKeyPair();
 
-  const user = new User({name , username , email , password: passwordHash , bio , ppUrl: ppurl || "" , publicKey });
+
+    const user = new User({name , username , email , password: passwordHash , bio , ppUrl: ppurl || "" , publicKey });
   await user.save();
   res.status(201).json({ message: 'User created' });
 }
