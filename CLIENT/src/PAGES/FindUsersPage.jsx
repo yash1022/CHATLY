@@ -18,9 +18,6 @@ export default function FindUsersPage() {
   const [error, setError] = useState('');
 
   const safeQuery = query.trim();
-//   const normalizedQuery = mode === 'username' && safeQuery && !safeQuery.startsWith('@')
-//     ? `@${safeQuery}`
-//     : safeQuery;
 
   const filteredResults = useMemo(() => {
     const currentUserId = user ? String(user.id ?? user._id) : null;
@@ -44,7 +41,7 @@ export default function FindUsersPage() {
         params: { mode, query: safeQuery }
       });
 
-      
+
 
       const payload = response?.data;
       if (Array.isArray(payload)) {
@@ -68,7 +65,7 @@ export default function FindUsersPage() {
     if (!normalizedId) {
       return;
     }
-    navigate('/chats', { state: { preselectUserId: normalizedId } });
+    navigate('/chats', { state: { preselectUser: targetUser } });
   };
 
   return (

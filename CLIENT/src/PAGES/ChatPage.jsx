@@ -83,6 +83,7 @@ export default function ChatPage() {
   const [typing ,setTyping] = useState(false);
   const [typingUser, setTypingUser] = useState(null);
   const [isRead, setIsRead] = useState(false);
+  const [isFirstMessage,setIsFirstMessage] = useState(true);
   
   const aesKeyStore = useRef(new Map());
   const typingTimeout = useRef(null);
@@ -123,12 +124,33 @@ export default function ChatPage() {
 
   },[]);  // FETCH USERS
 
-  useEffect(() => {
-    const preselectId = location.state?.preselectUserId;
-    if (preselectId && String(preselectId) !== String(selectedUserId)) {
-      setSelectedUserId(String(preselectId));
+  useEffect(() =>  {
+    const preselectUser = location.state?.preselectUser;
+    if (!preselectUser) {
+      return;
     }
-  }, [location.state, selectedUserId]);
+
+    const preselectId = String(preselectUser?.id ?? preselectUser?._id ?? '');
+    if (!preselectId) {
+      return;
+    }
+
+    if (String(preselectId) !== String(selectedUserId)) {
+      setSelectedUserId(preselectId);
+    }
+
+    setFetchedUsers((prev) => {
+      const exists = prev.some((entry) => String(entry?.id ?? entry?._id) === preselectId);
+      if (exists) {
+        return prev;
+      }
+      return [preselectUser, ...prev];
+    });
+
+    
+
+
+  }, [location.state, selectedUserId]);     // PRESELECTED USER
 
 
 
@@ -263,7 +285,7 @@ export default function ChatPage() {
 
       try
       {
-        console.log("CALLING EXCHANGE WITH PARAMS ");
+       
         const response = await api.get(`/exchange/${selectedUserId}`)
         if(!response)
         {
@@ -273,6 +295,9 @@ export default function ChatPage() {
         console.log(response);
 
         const encryptedAesKey = response.data.encryptedAesKey;   //ERROR HERE
+        const isUsed = response.data.isUsed;
+
+        setIsFirstMessage(!isUsed);
 
         if(encryptedAesKey)
         {
@@ -369,7 +394,20 @@ const privateKey = await importPrivateKeyFromPem(privateKeyPem);
     {
       const response = await api.get('/feature/users');
       console.log('FETCHED USERS', response.data);
-      setFetchedUsers(response.data);
+      const preselectUser = location.state?.preselectUser;
+      if (!preselectUser) {
+        setFetchedUsers(response.data);
+        return;
+      }
+
+      const preselectId = String(preselectUser?.id ?? preselectUser?._id ?? '');
+      if (!preselectId) {
+        setFetchedUsers(response.data);
+        return;
+      }
+
+      const exists = response.data.some((entry) => String(entry?.id ?? entry?._id) === preselectId);
+      setFetchedUsers(exists ? response.data : [preselectUser, ...response.data]);
     }
 
     catch(err)
@@ -496,8 +534,16 @@ const privateKey = await importPrivateKeyFromPem(privateKeyPem);
 
     try
     {
+      if(isFirstMessage)
+       {
+         
+         await addToContacts(selectedUserId);
+         setIsFirstMessage(false);
+         
+       }
       socket.emit('send_message', payload);
       setDraftMessage('');
+       
       socket.emit('typing_indicator',{
         recieverId : selectedUserId,
         isTyping : false
@@ -506,6 +552,10 @@ const privateKey = await importPrivateKeyFromPem(privateKeyPem);
     }
     catch(err)
     {
+      if(isFirstMessage)
+      {
+        await deleteFromContacts(selectedUserId);     //WILL BE HANDLED LATER
+      }
       console.error('Error sending message', err);
       return; 
     }
@@ -513,6 +563,24 @@ const privateKey = await importPrivateKeyFromPem(privateKeyPem);
     
 
   }
+
+  const addToContacts = async(recieverId)=>{
+
+    try
+    {
+      await api.post('feature/contacts/add',{
+      contactId : recieverId
+    })
+
+    }
+    catch(err)
+    {
+      console.error('ERROR ADDING TO CONTACTS',err);
+      return;
+    }
+   
+  }
+  
 
   const handleDraftChange = (event)=>{
     setDraftMessage(event.target.value);

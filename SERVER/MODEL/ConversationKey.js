@@ -15,6 +15,11 @@ const ConversationKeySchema = new mongoose.Schema({
         required: true
     },
 
+    isUsed:{
+        type: Boolean,
+        default: false
+    },
+
     encryptedAesKey:{
         type: String,
         required: true
@@ -31,6 +36,13 @@ ConversationKeySchema.index(
   { senderId: 1, recieverId: 1 },
   { unique: true }
 );
+
+ConversationKeySchema.index({ isUsed: 1, createdAt: 1 });
+
+ConversationKeySchema.statics.cleanupUnusedKeys = async function(hours = 24) {
+        const cutoff = new Date(Date.now() - hours * 60 * 60 * 1000);
+        return this.deleteMany({ isUsed: false, createdAt: { $lte: cutoff } });
+};
 
 const ConversationKey = mongoose.model("ConversationKey",ConversationKeySchema);
 

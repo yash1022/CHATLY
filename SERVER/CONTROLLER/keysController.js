@@ -57,7 +57,7 @@ export const getConversationKey = async(req,res)=>{
             return res.status(404).json({ message: "Conversation key not found" });
         }
 
-        return res.status(200).json({ encryptedAesKey: conversationKey.encryptedAesKey });
+        return res.status(200).json({ encryptedAesKey: conversationKey.encryptedAesKey, isUsed: conversationKey.isUsed });
 
     }
     catch(error)

@@ -12,6 +12,7 @@ import authMiddleware from './MIDDLEWARE/authMiddleware.js';
 import initSocket from './SOCKET/socket_init.js';
 import exchangeRoutes from './ROUTES/ExchangeRoutes.js';
 import { User } from './MODEL/Users.js';
+import ConversationKey from './MODEL/ConversationKey.js';
 
 
 
@@ -94,6 +95,15 @@ const PORT = process.env.PORT || 5000;
 server.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
+
+const CLEANUP_INTERVAL_MS = 60 * 60 * 1000; // 1 hour
+setInterval(async () => {
+  try {
+    await ConversationKey.cleanupUnusedKeys(24);
+  } catch (err) {
+    console.error('ConversationKey cleanup failed:', err);
+  }
+}, CLEANUP_INTERVAL_MS);
 
 
 

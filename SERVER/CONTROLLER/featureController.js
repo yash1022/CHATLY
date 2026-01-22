@@ -1,18 +1,18 @@
 import User from "../MODEL/Users.js";
 import Message from "../MODEL/Message.js";
+import ConversationKey from "../MODEL/ConversationKey.js";
 
 
 export const getAllUsers = async(req, res)=>{
 
     try{
 
-       // FIND ALL USERS EXCEPT THE CURRENT USER AND INCLUDE ONLY _ID , NAME , USERNAME , BIO , PPURL
+       // FIND ALL USERS IN CURRENT USER'S CONTACTS ARRAY INCLUDE ONLY _ID , NAME , USERNAME , BIO , PPURL
 
-         const users = await User.find(
-            { _id: { $ne: req.user._id } },
-            { _id: 1, name: 1, username: 1, bio: 1, ppUrl: 1, publicKey: 1 }
-        );
-            res.json(users);
+         const users = await User.find({_id:{$in:req.user.contacts}},{_id:1,name:1,username:1,bio:1,ppurl:1,publicKey:1});
+         res.json(users);
+
+         
            
 
     }
@@ -105,4 +105,60 @@ export const getSearchedUser = async(req,res)=>{
         res.status(500).json({message:'SERVER ERROR'});
     }
 }
+
+export const addToContacts = async(req,res)=>{
+    try{
+        const {contactId} =  req.body;
+        const senderId = req.user._id;
+
+        console.log("ADDING TO CONTACTS:",contactId);
+        console.log("SENDER ID:",senderId);
+
+
+
+        if(!contactId)
+        {
+            return res.status(400).json({message:"CONTACT ID IS REQUIRERD"});
+        }
+
+        // ADD CONTACT ID TO CURRENT USER'S CONTACTS ARRAY IF NOT ALREADY PRESENT
+
+        await User.findByIdAndUpdate(senderId,{
+            $addToSet:{contacts:contactId}
+
+        })
+
+        await User.findByIdAndUpdate(contactId,{
+            $addToSet:{contacts:senderId}
+        })
+
+        // SET CONVERSTATION KEY ISUSED TO TRUE IF EXISTS
+
+        await ConversationKey.findOneAndUpdate({
+            senderId: senderId,
+            recieverId: contactId
+        },{
+            isUsed: true    
+        })
+
+        await ConversationKey.findOneAndUpdate({
+            senderId: contactId,
+            recieverId: senderId
+        },{
+            isUsed: true    
+        })
+
+        console.log("CONTACT ADDED TO CONTACTS LIST");
+
+        res.json({message:"CONTACT ADDED SUCCESSFULLY"});
+
+
+
+    }
+    catch(err)
+    {
+        res.status(500).json({message:"SERVER ERROR"});
+    }
+}
+
 
