@@ -4,7 +4,7 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import http from 'http';
-import { connectDB } from './config/DB.js';
+import { connectDB } from './config/db.js';
 import authRoutes from './routes/authRoutes.js';
 import featureRoutes from './routes/featureRoutes.js';
 import cookieParser from 'cookie-parser';
