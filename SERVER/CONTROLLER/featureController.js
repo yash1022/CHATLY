@@ -1,6 +1,6 @@
-import User from "../model/Users.js";
-import Message from "../model/Message.js";
-import ConversationKey from "../model/ConversationKey.js";
+import User from "../MODEL/Users.js";
+import Message from "../MODEL/Message.js";
+import ConversationKey from "../MODEL/ConversationKey.js";
 
 
 export const getAllUsers = async(req, res)=>{

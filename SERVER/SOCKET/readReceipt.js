@@ -1,5 +1,5 @@
 import { get } from "mongoose";
-import Message from "../model/Message.js";
+import Message from "../MODEL/Message.js";
 import { getUserSockets } from "./onlineUsers.js";
 
 

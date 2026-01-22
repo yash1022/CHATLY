@@ -1,5 +1,5 @@
 import {Server} from 'socket.io'; 
-import socketAuthMiddleware from '../middleware/socketAuthMiddleware.js';
+import socketAuthMiddleware from '../MIDDLEWARE/socketAuthMiddleware.js';
 import {
     addUserSocket,
     removeUserSocket,

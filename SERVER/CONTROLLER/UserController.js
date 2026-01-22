@@ -1,5 +1,5 @@
-import User from '../model/Users.js';
-import Session from '../model/Session.js';
+import User from '../MODEL/Users.js';
+import Session from '../MODEL/Session.js';
 import bcrypt from 'bcrypt';
 import {
   signAccessToken,
@@ -7,7 +7,7 @@ import {
   refreshTokenExpiryDate,
   hashToken,
   compareTokenHash
-} from '../utils/token.js';
+} from '../UTILS/token.js';
 
 
 /**
