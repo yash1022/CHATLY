@@ -1,8 +1,10 @@
 
 import axios from 'axios';
 
+const baseURL = import.meta.env.VITE_API_BASE_URL || '/api';
+
 const api = axios.create({
-  baseURL: '/api', // proxied to backend by Vite dev server
+  baseURL, // VITE_API_BASE_URL in prod, /api in dev
   timeout: 10000, // Request timeout in milliseconds
   withCredentials: true, // Send cookies with requests
 });

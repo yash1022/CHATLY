@@ -23,9 +23,9 @@ export const connectSocket = (accessToken) => {
   // first-time connection
   currentToken = accessToken;
 
-  const SOCKET_URL = window.location.origin.replace(/^http/, "ws");
+  const SOCKET_URL = import.meta.env.VITE_SOCKET_URL || window.location.origin;
 
-  socket = io("/", {
+  socket = io(SOCKET_URL, {
     transports: ["websocket"],
     auth: { token: accessToken }
   });

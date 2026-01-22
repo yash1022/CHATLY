@@ -14,9 +14,14 @@ import { handleRead } from './readReceipt.js';
 
 const initSocket = (server)=>{
 
+    const allowedOrigins = (process.env.CORS_ORIGINS || 'http://localhost:5173')
+        .split(',')
+        .map(origin => origin.trim())
+        .filter(Boolean);
+
     const io = new Server(server,{
         cors:{
-            origin:'http://localhost:5173',
+            origin: allowedOrigins,
             methods:['GET','POST'],
             credentials:true
 

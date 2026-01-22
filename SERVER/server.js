@@ -26,8 +26,14 @@ const server = http.createServer(app);
 // MIDDLEWARE
 
 dotenv.config();
+
+const allowedOrigins = (process.env.CORS_ORIGINS || 'http://localhost:5173')
+  .split(',')
+  .map(origin => origin.trim())
+  .filter(Boolean);
+
 app.use(cors({
-  origin: 'http://localhost:5173', 
+  origin: allowedOrigins,
   credentials: true
 }));
 
