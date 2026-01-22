@@ -4,15 +4,15 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import http from 'http';
-import { connectDB } from './CONFIG/DB.js';
-import authRoutes from './ROUTES/authRoutes.js';
-import featureRoutes from './ROUTES/featureRoutes.js';
+import { connectDB } from './config/DB.js';
+import authRoutes from './routes/authRoutes.js';
+import featureRoutes from './routes/featureRoutes.js';
 import cookieParser from 'cookie-parser';
-import authMiddleware from './MIDDLEWARE/authMiddleware.js';
-import initSocket from './SOCKET/socket_init.js';
-import exchangeRoutes from './ROUTES/ExchangeRoutes.js';
-import { User } from './MODEL/Users.js';
-import ConversationKey from './MODEL/ConversationKey.js';
+import authMiddleware from './middleware/authMiddleware.js';
+import initSocket from './socket/socket_init.js';
+import exchangeRoutes from './routes/ExchangeRoutes.js';
+import { User } from './model/Users.js';
+import ConversationKey from './model/ConversationKey.js';
 
 
 

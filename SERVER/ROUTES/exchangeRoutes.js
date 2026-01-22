@@ -1,5 +1,5 @@
 import express from 'express';
-import { storeConversationKey, getConversationKey } from '../CONTROLLER/keysController.js';
+import { storeConversationKey, getConversationKey } from '../controller/keysController.js';
 
 const router = express.Router();
 

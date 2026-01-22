@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import { User } from '../MODEL/Users.js';
+import { User } from '../model/Users.js';
 
 const JWT_SECRET = process.env.JWT_SECRET ||""
 

@@ -1,4 +1,4 @@
-import Message from "../MODEL/Message.js";
+import Message from "../model/Message.js";
 import {
     getUserSockets
 } from "./onlineUsers.js";

@@ -1,5 +1,5 @@
 import {Server} from 'socket.io'; 
-import socketAuthMiddleware from '../MIDDLEWARE/socketAuthMiddleware.js';
+import socketAuthMiddleware from '../middleware/socketAuthMiddleware.js';
 import {
     addUserSocket,
     removeUserSocket,
@@ -8,7 +8,7 @@ import {
 } from './onlineUsers.js';
 import { handleTyping } from './typingIndicator.js';
 
-import {handleMessage} from '../SOCKET/message.handler.js'
+import {handleMessage} from './message.handler.js'
 import { handleRead } from './readReceipt.js';
 
 

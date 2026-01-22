@@ -1,5 +1,5 @@
 import express from 'express';
-import { getAllUsers, getMessagesBetweenUsers,getSearchedUser,addToContacts } from '../CONTROLLER/featureController.js';
+import { getAllUsers, getMessagesBetweenUsers,getSearchedUser,addToContacts } from '../controller/featureController.js';
 
 
 const router = express.Router();

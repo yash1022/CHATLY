@@ -1,4 +1,4 @@
-import ConversationKey from "../MODEL/ConversationKey.js";
+import ConversationKey from "../model/ConversationKey.js";
 import mongoose from 'mongoose';
 
 
