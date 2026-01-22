@@ -21,7 +21,7 @@ const initSocket = (server)=>{
 
     const io = new Server(server,{
         cors:{
-            origin: allowedOrigins,
+            origin: "https://chatly-topaz.vercel.app",
             methods:['GET','POST'],
             credentials:true
 

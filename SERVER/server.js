@@ -33,7 +33,7 @@ const allowedOrigins = (process.env.CORS_ORIGINS || 'http://localhost:5173')
   .filter(Boolean);
 
 app.use(cors({
-  origin: allowedOrigins,
+  origin:"https://chatly-topaz.vercel.app",
   credentials: true
 }));
 
