@@ -4,19 +4,27 @@ import { useNavigate } from 'react-router-dom';
 
 export default function LoginPage() {
 
-   const { login } = useAuth();
+  const { login } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [err, setErr] = useState(null);
+  const [showStatusModal, setShowStatusModal] = useState(false);
+  const [statusType, setStatusType] = useState(null);
   const nav = useNavigate();
 
   async function onSubmit(e) {
     e.preventDefault();
     try {
       await login(email, password);
-      nav('/');
+      setStatusType('success');
+      setShowStatusModal(true);
+      window.setTimeout(() => {
+        nav('/');
+      }, 5000);
     } catch (error) {
       setErr(error.response?.data?.message || 'Login failed');
+      setStatusType('error');
+      setShowStatusModal(true);
     }
   }
   return (
@@ -98,6 +106,50 @@ export default function LoginPage() {
           </p>
         </div>
       </div>
+
+      {showStatusModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
+          <div
+            className="absolute inset-0 bg-slate-950/70"
+            onClick={() => setShowStatusModal(false)}
+          />
+          <div className="relative z-10 w-full max-w-md mx-4 rounded-2xl border border-slate-800 bg-slate-900 p-6 shadow-2xl">
+            <div className="flex items-start justify-between">
+              <h2 className="text-lg font-semibold text-slate-100">
+                {statusType === 'success' ? 'Logged in successfully' : 'Failed to login retry'}
+              </h2>
+              <button
+                className="text-slate-400 hover:text-slate-200"
+                onClick={() => setShowStatusModal(false)}
+                aria-label="Close"
+              >
+                ✕
+              </button>
+            </div>
+            <p className="mt-3 text-slate-300">
+              {statusType === 'success'
+                ? 'Welcome back! Redirecting you to home.'
+                : err || 'Please check your credentials and try again.'}
+            </p>
+            <div className="mt-6 flex items-center justify-end gap-3">
+              <button
+                className="rounded-full border border-slate-700 px-4 py-2 text-slate-200 hover:bg-slate-800"
+                onClick={() => setShowStatusModal(false)}
+              >
+                Close
+              </button>
+              {statusType === 'success' && (
+                <button
+                  className="rounded-full bg-blue-600 px-4 py-2 font-semibold text-white hover:bg-blue-500"
+                  onClick={() => nav('/')}
+                >
+                  Continue
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

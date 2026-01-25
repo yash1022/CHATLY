@@ -9,16 +9,19 @@ export default function SignupPage() {
   const [name, setName] = useState('');
   const [userName , setUserName] = useState('');
   const [bio, setBio] = useState('');
+  const [showStatusModal, setShowStatusModal] = useState(false);
+  const [statusType, setStatusType] = useState(null);
   const nav = useNavigate();
 
   async function onSubmit(e) {
     e.preventDefault();
     try {
       await register(name , userName , email , password , bio);
-      alert('Registration successful! Please log in.');
-      nav('/login');
+      setStatusType('success');
+      setShowStatusModal(true);
     } catch {
-      alert('Register failed');
+      setStatusType('error');
+      setShowStatusModal(true);
     }
   }
   return (
@@ -122,6 +125,53 @@ export default function SignupPage() {
           </aside>
         </div>
       </div>
+
+      {showStatusModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
+          <div
+            className="absolute inset-0 bg-slate-950/70"
+            onClick={() => setShowStatusModal(false)}
+          />
+          <div className="relative z-10 w-full max-w-md mx-4 rounded-2xl border border-slate-800 bg-slate-900 p-6 shadow-2xl">
+            <div className="flex items-start justify-between">
+              <h2 className="text-lg font-semibold text-slate-100">
+                {statusType === 'success' ? 'Registration successful' : 'Registration failed'}
+              </h2>
+              <button
+                className="text-slate-400 hover:text-slate-200"
+                onClick={() => setShowStatusModal(false)}
+                aria-label="Close"
+              >
+                ✕
+              </button>
+            </div>
+            <p className="mt-3 text-slate-300">
+              {statusType === 'success'
+                ? 'Your account is ready. Please login to continue.'
+                : 'We could not create your account. Please try again.'}
+            </p>
+            <div className="mt-6 flex items-center justify-end gap-3">
+              <button
+                className="rounded-full border border-slate-700 px-4 py-2 text-slate-200 hover:bg-slate-800"
+                onClick={() => setShowStatusModal(false)}
+              >
+                Close
+              </button>
+              {statusType === 'success' && (
+                <button
+                  className="rounded-full bg-blue-600 px-4 py-2 font-semibold text-white hover:bg-blue-500"
+                  onClick={() => {
+                    setShowStatusModal(false);
+                    nav('/login');
+                  }}
+                >
+                  Go to Login
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
