@@ -1,8 +1,19 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../CONTEXT/AuthProvider';
 
 export default function HomePage() {
   const navigate = useNavigate();
+  const { user } = useAuth();
+  const [showLoginPrompt, setShowLoginPrompt] = useState(false);
+
+  const handleGetStarted = () => {
+    if (user) {
+      navigate('/chats');
+      return;
+    }
+    setShowLoginPrompt(true);
+  };
   return (
     <div className="min-h-screen bg-linear-to-br from-slate-950 via-slate-900 to-slate-950">
       {/* Hero Section */}
@@ -21,22 +32,23 @@ export default function HomePage() {
             {/* Subtitle */}
             <p className="text-xl text-slate-300 max-w-2xl mx-auto">
               Experience seamless real-time messaging with end-to-end encryption. 
-              Stay connected with your friends and family, anytime, anywhere.
+             
             </p>
 
             {/* CTA Buttons */}
             <div className="flex items-center justify-center space-x-4 pt-8">
-              <button className="px-8 py-4 bg-linear-to-r from-blue-500 to-purple-600 text-white font-semibold rounded-full hover:shadow-xl hover:scale-105 transition-all duration-200" onClick={()=> navigate('/chats')}>
-                Get Started Free
+              <button
+                className="px-8 py-4 bg-linear-to-r from-blue-500 to-purple-600 text-white font-semibold rounded-full hover:shadow-xl hover:scale-105 transition-all duration-200"
+                onClick={handleGetStarted}
+              >
+                Get Started
               </button>
-              <button className="px-8 py-4 bg-slate-900 text-slate-200 font-semibold rounded-full border-2 border-slate-800 hover:border-blue-500 hover:text-blue-400 transition-all duration-200">
-                Learn More
-              </button>
+             
             </div>
           </div>
 
           {/* Feature Cards */}
-          <div className="grid md:grid-cols-3 gap-8 mt-24">
+          <div className="grid md:grid-cols-2 gap-9 mt-24">
             {/* Card 1 */}
             <div className="bg-slate-900/80 rounded-2xl p-8 shadow-sm hover:shadow-xl transition-all duration-300 border border-slate-800">
               <div className="w-14 h-14 bg-blue-500/20 rounded-xl flex items-center justify-center mb-4">
@@ -63,18 +75,8 @@ export default function HomePage() {
               </p>
             </div>
 
-            {/* Card 3 */}
-            <div className="bg-slate-900/80 rounded-2xl p-8 shadow-sm hover:shadow-xl transition-all duration-300 border border-slate-800">
-              <div className="w-14 h-14 bg-emerald-500/20 rounded-xl flex items-center justify-center mb-4">
-                <svg className="w-8 h-8 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-bold text-slate-100 mb-2">Group Chats</h3>
-              <p className="text-slate-300">
-                Create groups, share moments, and stay connected with multiple friends at once.
-              </p>
-            </div>
+           
+            
           </div>
         </div>
       </main>
@@ -82,9 +84,50 @@ export default function HomePage() {
       {/* Footer */}
       <footer className="bg-slate-950 border-t border-slate-800 py-8">
         <div className="max-w-7xl mx-auto px-6 text-center text-slate-400">
-          <p>© 2025 Chatly. All rights reserved.</p>
+         
         </div>
       </footer>
+
+      {showLoginPrompt && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
+          <div
+            className="absolute inset-0 bg-slate-950/70"
+            onClick={() => setShowLoginPrompt(false)}
+          />
+          <div className="relative z-10 w-full max-w-md mx-4 rounded-2xl border border-slate-800 bg-slate-900 p-6 shadow-2xl">
+            <div className="flex items-start justify-between">
+              <h2 className="text-lg font-semibold text-slate-100">Please login</h2>
+              <button
+                className="text-slate-400 hover:text-slate-200"
+                onClick={() => setShowLoginPrompt(false)}
+                aria-label="Close"
+              >
+                ✕
+              </button>
+            </div>
+            <p className="mt-3 text-slate-300">
+              You need to be logged in to start chatting.
+            </p>
+            <div className="mt-6 flex items-center justify-end gap-3">
+              <button
+                className="rounded-full border border-slate-700 px-4 py-2 text-slate-200 hover:bg-slate-800"
+                onClick={() => setShowLoginPrompt(false)}
+              >
+                Close
+              </button>
+              <button
+                className="rounded-full bg-blue-600 px-4 py-2 font-semibold text-white hover:bg-blue-500"
+                onClick={() => {
+                  setShowLoginPrompt(false);
+                  navigate('/login');
+                }}
+              >
+                Go to Login
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

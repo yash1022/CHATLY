@@ -84,6 +84,8 @@ export default function ChatPage() {
   const [typingUser, setTypingUser] = useState(null);
   const [isRead, setIsRead] = useState(false);
   const [isFirstMessage,setIsFirstMessage] = useState(true);
+  const [isLoadingUsers, setIsLoadingUsers] = useState(false);
+  const [isLoadingMessages, setIsLoadingMessages] = useState(false);
   
   const aesKeyStore = useRef(new Map());
   const typingTimeout = useRef(null);
@@ -392,6 +394,7 @@ const privateKey = await importPrivateKeyFromPem(privateKeyPem);
 
     try
     {
+      setIsLoadingUsers(true);
       const response = await api.get('/feature/users');
       console.log('FETCHED USERS', response.data);
       const preselectUser = location.state?.preselectUser;
@@ -415,6 +418,10 @@ const privateKey = await importPrivateKeyFromPem(privateKeyPem);
       console.error('Error fetching users', err);
       return;
     }
+    finally
+    {
+      setIsLoadingUsers(false);
+    }
 
 
 
@@ -427,6 +434,7 @@ const privateKey = await importPrivateKeyFromPem(privateKeyPem);
 
     try
     {
+      setIsLoadingMessages(true);
       const response = await api.get('/feature/messages', {
         params: { recieverId: selectedUserId }
       });
@@ -494,6 +502,10 @@ const privateKey = await importPrivateKeyFromPem(privateKeyPem);
     {
       console.error('Error fetching messages', err);
       return;
+    }
+    finally
+    {
+      setIsLoadingMessages(false);
     }
 
   }
@@ -659,7 +671,33 @@ const privateKey = await importPrivateKeyFromPem(privateKeyPem);
             </div>
 
             <div className="flex-1 overflow-y-auto">
-              {fetchedUsers.map((user) => {
+              {isLoadingUsers ? (
+                <div className="h-full flex items-center justify-center py-10">
+                  <div className="flex items-center gap-3 text-slate-300">
+                    <svg
+                      className="h-6 w-6 animate-spin text-blue-400"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                    >
+                      <circle
+                        className="opacity-30"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      />
+                      <path
+                        className="opacity-90"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+                      />
+                    </svg>
+                    <span className="text-sm font-semibold">Loading chats...</span>
+                  </div>
+                </div>
+              ) : (
+                fetchedUsers.map((user) => {
                 const normalizedId = String(user?.id ?? user?._id);
                 const isActive = normalizedId === selectedUserId;
                 const isOnline = onlineUserSet.has(normalizedId);
@@ -707,7 +745,8 @@ const privateKey = await importPrivateKeyFromPem(privateKeyPem);
                     </div>
                   </button>
                 );
-              })}
+              })
+              )}
             </div>
           </aside>
 
@@ -750,7 +789,32 @@ const privateKey = await importPrivateKeyFromPem(privateKeyPem);
                 </header>
 
                 <div className="flex-1 min-h-0 px-6 py-6 space-y-6 bg-linear-to-b from-slate-900/80 to-slate-950 overflow-y-auto">
-                  {messages.length === 0 ? (
+                  {isLoadingMessages ? (
+                    <div className="h-full flex items-center justify-center">
+                      <div className="flex items-center gap-3 text-slate-300">
+                        <svg
+                          className="h-6 w-6 animate-spin text-blue-400"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                        >
+                          <circle
+                            className="opacity-30"
+                            cx="12"
+                            cy="12"
+                            r="10"
+                            stroke="currentColor"
+                            strokeWidth="4"
+                          />
+                          <path
+                            className="opacity-90"
+                            fill="currentColor"
+                            d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+                          />
+                        </svg>
+                        <span className="text-sm font-semibold">Loading messages...</span>
+                      </div>
+                    </div>
+                  ) : messages.length === 0 ? (
                     <div className="h-full flex items-center justify-center text-sm font-semibold tracking-wide text-slate-400">
                       {`START YOUR CHAT WITH ${(
                         selectedUser?.name || selectedUser?.username || 'USER'
