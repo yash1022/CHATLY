@@ -61,7 +61,6 @@ export async function login(req, res) {
   const { tokenId, raw } = generateRefreshTokenRaw();
   const tokenHash = await hashToken(raw);
   const expiresAt = refreshTokenExpiryDate();
-
   const session = new Session({
     _id: tokenId,
     user: user._id,
