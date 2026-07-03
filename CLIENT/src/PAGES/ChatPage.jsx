@@ -184,6 +184,8 @@ export default function ChatPage() {
       payloadMessage.content = decryptedContent;
 
        console.log("SUCCESSFULLY DECRYPTED THE MESSAGE-->",decryptedContent);
+       const latency = performance.now() - payloadMessage.sentAt;
+       console.log(latency);
 
 
       if(String(payloadMessage.sender) === String(selectedUserId) || String(payloadMessage.reciever) === String(selectedUserId))
@@ -539,6 +541,7 @@ const privateKey = await importPrivateKeyFromPem(privateKeyPem);
       recieverId : selectedUserId,
       content: encryptedContent.ciphertext,
       iv: encryptedContent.iv,
+      sentAt:performance.now()
      
     };
     

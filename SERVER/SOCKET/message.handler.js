@@ -7,7 +7,7 @@ import {
 export const handleMessage = async (io , socket , payload)=>{
     try{
 
-         const {recieverId ,content,iv} = payload;
+         const {recieverId ,content,iv,sentAt} = payload;
     const senderId = socket.userId;
 
     if(!recieverId || !content)
@@ -29,7 +29,8 @@ export const handleMessage = async (io , socket , payload)=>{
 
         const payloadMessage = {
             ...message.toObject(),
-            iv
+            iv,
+            sentAt
         }
 
        
